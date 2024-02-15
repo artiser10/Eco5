@@ -31,6 +31,7 @@ public class Cmd_SQL implements CommandExecutor, TabCompleter {
                 sugg.add("atms");
                 sugg.add("fines");
                 sugg.add("companies");
+                sugg.add("productionPlaces");
             }
         }
 
@@ -56,6 +57,7 @@ public class Cmd_SQL implements CommandExecutor, TabCompleter {
             case ("fines")     -> {db = DataBlock.fines;     break;}
             case ("atms")      -> {db = DataBlock.ATMs;      break;}
             case ("companies") -> {db = DataBlock.companies; break;}
+            case ("productionPlaces") -> {db = DataBlock.productionPlaces; break;}
             case default -> {
                 return true;
             }
