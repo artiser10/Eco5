@@ -2,10 +2,7 @@ package doctor.eco5.data;
 
 import doctor.eco5.Eco5;
 import doctor.eco5.InformationBlock;
-import doctor.eco5.obj.ATM;
-import doctor.eco5.obj.Company;
-import doctor.eco5.obj.Door;
-import doctor.eco5.obj.Fine;
+import doctor.eco5.obj.*;
 import doctor.eco5.obj.rp.RPUser;
 import doctor.eco5.types.DataAction;
 import doctor.eco5.types.DataBlock;
@@ -165,6 +162,12 @@ public class DataAdapter {
                         set.add(uh);
                     }
                 }
+                case productionPlaces -> {
+                    for (ProductionPlace place : Eco5.productionPlaces) {
+                        HashMap<String, String> uh = place.toHashMap();
+                        set.add(uh);
+                    }
+                }
                 case default -> table = "nd";
             }
             table = dataBlock.toString().toLowerCase();
@@ -229,6 +232,14 @@ public class DataAdapter {
                                 companies.add(Company.fromHashMap(hashMap));
                             }
                             Eco5.companies = companies;
+                            return true;
+                        }
+                        case productionPlaces -> {
+                            Set<ProductionPlace> places = new HashSet<>();
+                            for (HashMap<String, String> hashMap : data) {
+                                places.add(ProductionPlace.fromHashMap(hashMap));
+                            }
+                            Eco5.productionPlaces = places;
                             return true;
                         }
                     }

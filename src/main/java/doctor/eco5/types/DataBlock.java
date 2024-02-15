@@ -7,6 +7,7 @@ public enum DataBlock {
     ATMs,
     fines,
     doors,
+    productionPlaces,
     companies;
 
     static final HashMap<DataBlock, String> codec = new HashMap<>();
@@ -16,6 +17,7 @@ public enum DataBlock {
         codec.put(ATMs, "atms");
         codec.put(doors, "doors");
         codec.put(fines, "fines");
+        codec.put(productionPlaces, "productionplaces");
         codec.put(companies, "companies");
     }
 
