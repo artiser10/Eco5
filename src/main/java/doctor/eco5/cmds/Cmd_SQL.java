@@ -52,11 +52,11 @@ public class Cmd_SQL implements CommandExecutor, TabCompleter {
             da = DataAction.initialization;
         }
         switch (args[2]) {
-            case ("doors")     -> {db = DataBlock.doors;     break;}
-            case ("rpusers")   -> {db = DataBlock.rpUsers;   break;}
-            case ("fines")     -> {db = DataBlock.fines;     break;}
-            case ("atms")      -> {db = DataBlock.ATMs;      break;}
-            case ("companies") -> {db = DataBlock.companies; break;}
+            case ("doors")            -> {db = DataBlock.doors;            break;}
+            case ("rpusers")          -> {db = DataBlock.rpUsers;          break;}
+            case ("fines")            -> {db = DataBlock.fines;            break;}
+            case ("atms")             -> {db = DataBlock.ATMs;             break;}
+            case ("companies")        -> {db = DataBlock.companies;        break;}
             case ("productionPlaces") -> {db = DataBlock.productionPlaces; break;}
             case default -> {
                 return true;
@@ -66,14 +66,22 @@ public class Cmd_SQL implements CommandExecutor, TabCompleter {
             return true;
         }
         try {
-            DataAdapter.dataAction(db, da);
+            boolean st = DataAdapter.dataAction(db, da);
             if (da == DataAction.archivization) {
-                commandSender.sendMessage("Схавало");
+                if (st) {
+                    commandSender.sendMessage("Схавало без ошибок");
+                } else {
+                    commandSender.sendMessage("Схавало с ошибками");
+                }
             } else {
-                commandSender.sendMessage("Всосали");
+                if (st) {
+                    commandSender.sendMessage("Всосали без ошибок");
+                } else {
+                    commandSender.sendMessage("Всосали с ошибками");
+                }
             }
         } catch (Exception e) {
-            commandSender.sendMessage("Хуйня, переделывай: " + e);
+            commandSender.sendMessage("Хуйня, переделывай(фулл ангрил): " + e);
         }
         return true;
     }

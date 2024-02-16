@@ -2,8 +2,10 @@ package doctor.eco5;
 
 import doctor.eco5.obj.ATM;
 import doctor.eco5.obj.Door;
+import doctor.eco5.obj.ProductionPlace;
 import doctor.eco5.obj.eco.Economy;
 import doctor.eco5.obj.rp.RPUser;
+import doctor.eco5.types.ProductionType;
 import doctor.eco5.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -71,6 +73,10 @@ public class BukkitEvents implements Listener {
         }
         //InformationBlock.log_debug("call");
         Player player = event.getPlayer();
+        RPUser rpUser = RPUser.get(player);
+        if (rpUser == null) {
+            return;
+        }
         ItemStack is = event.getItem();
         Block block = event.getClickedBlock();
         if (block == null) {
@@ -122,12 +128,29 @@ public class BukkitEvents implements Listener {
         }
         //InformationBlock.log_debug("Блок2");
         if (is != null) {
-            if (is.getType() == Material.GLOWSTONE_DUST) {
-                //InformationBlock.log_debug("Создаём ATM");
-                atm = ATM.create(block.getLocation(), "A" + ((int) System.currentTimeMillis() * 1000));
-                player.sendMessage(Eco5.prefix.append(Component.text("ATM №" + atm.id + " создан.").color(TextColor.color(171, 255, 136))));
-                player.playSound(block.getLocation(), Sound.BLOCK_ANVIL_USE, 1,1);
-                return;
+            switch (is.getType()) {
+
+                case GLOWSTONE_DUST -> {
+                    //InformationBlock.log_debug("Создаём ATM");
+                    atm = ATM.create(block.getLocation(), "A" + ((int) System.currentTimeMillis() / 1000));
+                    player.sendMessage(Eco5.prefix.append(Component.text("ATM №" + atm.id + " создан.").color(TextColor.color(171, 255, 136))));
+                    player.playSound(block.getLocation(), Sound.BLOCK_ANVIL_USE, 1, 1);
+                    return;
+                }
+                case GOLDEN_PICKAXE -> {
+                    if (rpUser.isStaff()) {
+                        for (ProductionPlace PP : Eco5.productionPlaces) {
+                            if (PP.center.getCenterLoc(Eco5.world).distance(block.getLocation()) <= 1) {
+                                // тут есть, удаляем
+                                PP.delete();
+                                rpUser.sendMessage("Зона удалена.");
+                                return;
+                            }
+                        }
+                        ProductionPlace.create(block.getLocation(), ProductionType.ORE, 15F);
+                        rpUser.sendMessage("Зона создана.");
+                    }
+                }
             }
         }
         if (block.getBlockData() instanceof Stairs) {
@@ -177,10 +200,25 @@ public class BukkitEvents implements Listener {
         RPUser rpUser = RPUser.get(player);
         Block block = event.getBlock();
 
+        assert rpUser != null;
+        ProductionPlace PP = ProductionPlace.get(block.getLocation());
+        if (PP != null) {
+            PP.block_removed(block);
+        } else {
+            if (!rpUser.isStaff()) {
+                event.setCancelled(true);
+                rpUser.sendMessage("У вас нет полномочий ломать это здесь!");
+            }
+        }
+
+
+
         //Door check
         Door.remove(block.getLocation().clone().add(0, -1, 0));
         Door.remove(block.getLocation().clone().add(0,  0, 0));
         Door.remove(block.getLocation().clone().add(0, +1, 0));
+
+
 
     }
 

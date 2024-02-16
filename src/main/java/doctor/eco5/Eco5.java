@@ -78,17 +78,19 @@ public final class Eco5 extends JavaPlugin {
         }
 
         try {
-            InformationBlock.log_debug("INIT RPUSERS: "   + Processes.init(DataBlock.rpUsers  ));
-            InformationBlock.log_debug("INIT ATMS: "      + Processes.init(DataBlock.ATMs     ));
-            InformationBlock.log_debug("INIT DOORS: "     + Processes.init(DataBlock.doors    ));
-            InformationBlock.log_debug("INIT FINES: "     + Processes.init(DataBlock.fines    ));
-            InformationBlock.log_debug("INIT COMPANIES: " + Processes.init(DataBlock.companies));
+            InformationBlock.log_debug("INIT RPUSERS: "          + Processes.init(DataBlock.rpUsers         ));
+            InformationBlock.log_debug("INIT ATMS: "             + Processes.init(DataBlock.ATMs            ));
+            InformationBlock.log_debug("INIT DOORS: "            + Processes.init(DataBlock.doors           ));
+            InformationBlock.log_debug("INIT FINES: "            + Processes.init(DataBlock.fines           ));
+            InformationBlock.log_debug("INIT COMPANIES: "        + Processes.init(DataBlock.companies       ));
+            InformationBlock.log_debug("INIT PRODUCTIONPLACES: " + Processes.init(DataBlock.productionPlaces));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         InformationBlock.log_debug("Плагин запущен.");
         Bukkit.getScheduler().runTaskTimerAsynchronously(Eco5.plugin, Economy::Timer, 0, Economy.secondsTimer);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Eco5.plugin, ProductionPlace::checker, 0, 10     );
     }
 
 
@@ -97,11 +99,12 @@ public final class Eco5 extends JavaPlugin {
         InformationBlock.log_debug("Выключение плагина.");
 
         try {
-            InformationBlock.log_debug("ARCH RPUSERS: "   + Processes.arch(DataBlock.rpUsers  ));
-            InformationBlock.log_debug("ARCH ATMS: "      + Processes.arch(DataBlock.ATMs     ));
-            InformationBlock.log_debug("ARCH DOORS: "     + Processes.arch(DataBlock.doors    ));
-            InformationBlock.log_debug("ARCH FINES: "     + Processes.arch(DataBlock.fines    ));
-            InformationBlock.log_debug("ARCH COMPANIES: " + Processes.arch(DataBlock.companies));
+            InformationBlock.log_debug("ARCH RPUSERS:          " + Processes.arch(DataBlock.rpUsers         ));
+            InformationBlock.log_debug("ARCH ATMS:             " + Processes.arch(DataBlock.ATMs            ));
+            InformationBlock.log_debug("ARCH DOORS:            " + Processes.arch(DataBlock.doors           ));
+            InformationBlock.log_debug("ARCH FINES:            " + Processes.arch(DataBlock.fines           ));
+            InformationBlock.log_debug("ARCH COMPANIES:        " + Processes.arch(DataBlock.companies       ));
+            InformationBlock.log_debug("ARCH PRODUCTIONPLACES: " + Processes.arch(DataBlock.productionPlaces));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
