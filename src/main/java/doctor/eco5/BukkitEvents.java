@@ -147,8 +147,12 @@ public class BukkitEvents implements Listener {
                                 return;
                             }
                         }
-                        ProductionPlace.create(block.getLocation(), ProductionType.ORE, 15F);
-                        rpUser.sendMessage("Зона создана.");
+                        if (!ProductionPlace.inZone(block.getLocation())) {
+                            ProductionPlace.create(block.getLocation(), ProductionType.ORE, 15F);
+                            rpUser.sendMessage("Зона создана.");
+                        } else {
+                            rpUser.sendMessage("Вы уже находитесь в зоне (центр в другой зоне).");
+                        }
                     }
                 }
             }
@@ -204,6 +208,9 @@ public class BukkitEvents implements Listener {
         ProductionPlace PP = ProductionPlace.get(block.getLocation());
         if (PP != null) {
             PP.block_removed(block);
+            event.setDropItems(false);
+            event.setExpToDrop(0);
+            Eco5.world.playSound(block.getLocation(), Sound.BLOCK_CHAIN_FALL, 1, 1);
         } else {
             if (!rpUser.isStaff()) {
                 event.setCancelled(true);

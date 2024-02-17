@@ -3,10 +3,9 @@ package doctor.eco5.obj;
 import doctor.eco5.Eco5;
 import doctor.eco5.InformationBlock;
 import doctor.eco5.types.ProductionType;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.scheduler.BukkitRunnable;
 import ru.komiss77.modules.world.XYZ;
 
 import java.util.HashMap;
@@ -111,8 +110,9 @@ public class ProductionPlace {
             String[] spl = block.getBlockData().getMaterial().toString().split("_");
             for (String s : spl) {
                 if (s.equalsIgnoreCase("ORE")) {
-                    this.breaked_blocks.add(PBlock.PBlock(block.getType(), block.getLocation(), time));
+                    this.breaked_blocks.add(PBlock.PBlock(block.getType(), block.getLocation().add(-0.5, -0.5, -0.5), time));
                     block.setType(Material.AIR, true);
+                    Eco5.world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, block.getLocation(), 20);
                 }
             }
         }
@@ -129,11 +129,13 @@ public class ProductionPlace {
                 if (Math.abs(now - time) == 30) {
                     //InformationBlock.log_debug("B1:" + block.location.getBlock().getType());
                     //InformationBlock.log_debug("B1.5:" + block.material);
-                    block.location.getBlock().setType(block.material);
+                    Bukkit.getScheduler().runTask(Eco5.plugin, () -> {
+                        Eco5.world.setBlockData(block.location, block.material.createBlockData());
+                        Eco5.world.spawnParticle(Particle.NAUTILUS, block.location, 20);
+                        Eco5.world.playSound(block.location, Sound.ENTITY_CAMEL_DASH_READY, 1, 1);
+                    });
                     //InformationBlock.log_debug("B2:" + block.location.getBlock().getType());
                     PP.breaked_blocks.remove(block);
-                    Eco5.world.spawnParticle(Particle.CLOUD, PP.center.getCenterLoc(Eco5.world), 15);
-
                 }
             }
         }
