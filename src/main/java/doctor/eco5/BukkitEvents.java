@@ -9,10 +9,7 @@ import doctor.eco5.types.ProductionType;
 import doctor.eco5.utils.Gradient;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.BlockDisplay;
@@ -207,6 +204,9 @@ public class BukkitEvents implements Listener {
         assert rpUser != null;
         ProductionPlace PP = ProductionPlace.get(block.getLocation());
         if (PP != null) {
+            if (player.getGameMode() == GameMode.CREATIVE) {
+                return;
+            }
             PP.block_removed(block);
             event.setDropItems(false);
             event.setExpToDrop(0);

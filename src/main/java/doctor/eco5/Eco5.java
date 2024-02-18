@@ -31,11 +31,11 @@ public final class Eco5 extends JavaPlugin {
     public static Component prefix = Component.text("[").color(TextColor.color(255, 246, 162)).append(Component.text("ECO5").color(TextColor.color(202, 157, 255))).append(Component.text("] ").color(TextColor.color(255, 246, 162)));
     public static JavaPlugin plugin;
 
-    public static Set<RPUser >   rpUsers = new HashSet<>();
-    public static Set<ATM    >   atms    = new HashSet<>();
-    public static Set<Door   >   doors   = new HashSet<>();
-    public static Set<Fine   >   fines   = new HashSet<>();
-    public static Set<Company> companies = new HashSet<>();
+    public static Set<RPUser         >   rpUsers        = new HashSet<>();
+    public static Set<ATM            >   atms           = new HashSet<>();
+    public static Set<Door           >   doors          = new HashSet<>();
+    public static Set<Fine           >   fines          = new HashSet<>();
+    public static Set<Company        > companies        = new HashSet<>();
     public static Set<ProductionPlace> productionPlaces = new HashSet<>();
     public static HashMap<Player, Location> sit = new HashMap<>();
     public static World world;
